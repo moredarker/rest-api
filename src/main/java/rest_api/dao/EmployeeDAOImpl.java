@@ -47,6 +47,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         Session session = sessionFactory.getCurrentSession();
         Query<Employee> query = session.createQuery("delete from Employee where id = :employeeId");
         query.setParameter("employeeId", id);
-        query.executeUpdate();
+        int result = query.executeUpdate();
+        if (result == 0) {
+            throw new NoSuchEmployeeException("There is no employee with ID = " +
+                    id + " in Database");
+        }
     }
 }
